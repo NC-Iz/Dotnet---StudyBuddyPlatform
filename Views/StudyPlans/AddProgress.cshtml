@@ -1,0 +1,109 @@
+﻿@model StudyBuddyPlatform.Models.ProgressEntryViewModel
+
+@{
+    ViewData["Title"] = "Add Progress Entry";
+    var studyPlans = ViewBag.StudyPlans as List<StudyBuddyPlatform.Models.StudyPlan>;
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1><i class="fas fa-plus-circle me-3"></i>Add Progress Entry</h1>
+        <p>Record your daily study progress and reflections</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card slide-up">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-line me-2"></i>Progress Details</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="AddProgress" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="EntryDate" class="form-label">
+                                    <i class="fas fa-calendar me-2"></i>Study Date
+                                </label>
+                                <input asp-for="EntryDate" class="form-control" type="date" />
+                                <span asp-validation-for="EntryDate" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="StudyHours" class="form-label">
+                                    <i class="fas fa-clock me-2"></i>Study Hours
+                                </label>
+                                <input asp-for="StudyHours" class="form-control" type="number" step="0.5" min="0" max="24" />
+                                <span asp-validation-for="StudyHours" class="text-danger"></span>
+                                <small class="form-text text-muted">Use decimals for partial hours (e.g., 2.5 for 2 hours 30 minutes)</small>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="StudyPlanId" class="form-label">
+                                    <i class="fas fa-calendar-alt me-2"></i>Related Study Plan (Optional)
+                                </label>
+                                <select asp-for="StudyPlanId" class="form-control">
+                                    <option value="">Select a study plan (optional)</option>
+                                    @if (studyPlans != null)
+                                    {
+                                        @foreach (var plan in studyPlans)
+                                        {
+                                            <option value="@plan.Id">@plan.Title (@plan.Subject)</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="StudyPlanId" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="MoodRating" class="form-label">
+                                    <i class="fas fa-smile me-2"></i>Mood Rating (1-5)
+                                </label>
+                                <select asp-for="MoodRating" class="form-control">
+                                    <option value="">Select mood (optional)</option>
+                                    <option value="1">😞 1 - Very Poor</option>
+                                    <option value="2">😕 2 - Poor</option>
+                                    <option value="3">😐 3 - Average</option>
+                                    <option value="4">😊 4 - Good</option>
+                                    <option value="5">😄 5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="MoodRating" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="Notes" class="form-label">
+                                <i class="fas fa-sticky-note me-2"></i>Notes & Reflections
+                            </label>
+                            <textarea asp-for="Notes" class="form-control" rows="4"
+                                      placeholder="What did you study? How did it go? Any challenges or achievements?"></textarea>
+                            <span asp-validation-for="Notes" class="text-danger"></span>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Progress Entry
+                            </button>
+                            <a asp-action="Progress" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Progress
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

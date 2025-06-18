@@ -1,0 +1,152 @@
+﻿@model StudyBuddyPlatform.Models.StudyResource
+
+@{
+    ViewData["Title"] = "Resource Details";
+}
+
+<div class="page-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1><i class="fas fa-info-circle me-3"></i>Resource Details</h1>
+                <p>Detailed information about your study resource</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a asp-action="Download" asp-route-id="@Model.Id" class="btn btn-success">
+                    <i class="fas fa-download me-2"></i>Download File
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card slide-up">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">@Html.DisplayFor(model => model.Title)</h3>
+                        <span class="resource-type-badge resource-type-@Model.ResourceType.ToLower()">
+                            @if (Model.ResourceType == "PDF")
+                            {
+                                <i class="fas fa-file-pdf me-1"></i>
+                            }
+                            else if (Model.ResourceType == "Video")
+                            {
+                                <i class="fas fa-video me-1"></i>
+                            }
+                            @Model.ResourceType
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <div class="mb-4">
+                            <h5 class="text-muted mb-2">
+                                <i class="fas fa-align-left me-2"></i>Description
+                            </h5>
+                            <p class="fs-6">@Html.DisplayFor(model => model.Description)</p>
+                        </div>
+                    }
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-muted">
+                                    <i class="fas fa-graduation-cap me-2"></i>Subject
+                                </label>
+                                <p class="fs-5 mb-0">@Html.DisplayFor(model => model.Subject)</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-muted">
+                                    <i class="fas fa-file me-2"></i>File Name
+                                </label>
+                                <p class="fs-6 mb-0 font-monospace">@Html.DisplayFor(model => model.FileName)</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-muted">
+                                    <i class="fas fa-calendar-plus me-2"></i>Created Date
+                                </label>
+                                <p class="fs-6 mb-0">@Model.CreatedDate.ToString("MMMM dd, yyyy 'at' hh:mm tt")</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-muted">
+                                    <i class="fas fa-info me-2"></i>Content Type
+                                </label>
+                                <p class="fs-6 mb-0 font-monospace">@Html.DisplayFor(model => model.ContentType)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <a asp-action="Download" asp-route-id="@Model.Id" class="btn btn-success">
+                            <i class="fas fa-download me-2"></i>Download File
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                            <i class="fas fa-edit me-2"></i>Edit Resource
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                            <i class="fas fa-trash me-2"></i>Delete Resource
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Resources
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card slide-up">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-bar me-2"></i>Resource Stats</h5>
+                </div>
+                <div class="card-body">
+                    <div class="stats-card mb-3">
+                        <div class="stat-number">
+                            @if (Model.FileContent != null)
+                            {
+                                @((Model.FileContent.Length / 1024.0 / 1024.0).ToString("F2"))
+                            }
+                            else
+                            {
+                                @("0")
+                            }
+                        </div>
+                        <div class="stat-label">MB File Size</div>
+                    </div>
+
+                    <div class="stats-card">
+                        <div class="stat-number">@((DateTime.Now - Model.CreatedDate).Days)</div>
+                        <div class="stat-label">Days Since Created</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4 slide-up">
+                <div class="card-header">
+                    <h5><i class="fas fa-tools me-2"></i>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a asp-action="Create" class="btn btn-outline-primary">
+                            <i class="fas fa-plus me-2"></i>Add Another Resource
+                        </a>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-list me-2"></i>View All Resources
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

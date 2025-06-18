@@ -1,0 +1,41 @@
+﻿@model StudyBuddyPlatform.Models.User
+
+@{
+    ViewData["Title"] = "Deactivate Account";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h3>Deactivate Account</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Warning!</strong> This action will deactivate your account. You will be logged out and will not be able to login again until you contact support.
+                    </div>
+
+                    <p><strong>Account Details:</strong></p>
+                    <dl class="row">
+                        <dt class="col-sm-3">Name:</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+
+                        <dt class="col-sm-3">Email:</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+
+                        <dt class="col-sm-3">Member Since:</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedDate)</dd>
+                    </dl>
+
+                    <form asp-action="Deactivate" method="post" class="mt-4">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger">Yes, Deactivate My Account</button>
+                            <a asp-action="Profile" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

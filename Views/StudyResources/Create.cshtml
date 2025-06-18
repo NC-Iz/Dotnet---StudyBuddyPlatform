@@ -1,0 +1,111 @@
+﻿@model StudyBuddyPlatform.Models.StudyResource
+
+@{
+    ViewData["Title"] = "Add New Study Resource";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1><i class="fas fa-plus-circle me-3"></i>Add New Study Resource</h1>
+        <p>Upload and organize your learning materials</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card slide-up">
+                <div class="card-header">
+                    <h3><i class="fas fa-upload me-2"></i>Resource Details</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label asp-for="Title" class="form-label">
+                                    <i class="fas fa-heading me-2"></i>Resource Title
+                                </label>
+                                <input asp-for="Title" class="form-control" placeholder="Enter a descriptive title" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="ResourceType" class="form-label">
+                                    <i class="fas fa-file-alt me-2"></i>Resource Type
+                                </label>
+                                <select asp-for="ResourceType" class="form-control">
+                                    <option value="">Select Type</option>
+                                    <option value="PDF">
+                                        <i class="fas fa-file-pdf"></i> PDF Document
+                                    </option>
+                                    <option value="Video">
+                                        <i class="fas fa-video"></i> Video File
+                                    </option>
+                                </select>
+                                <span asp-validation-for="ResourceType" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="form-label">
+                                <i class="fas fa-align-left me-2"></i>Description
+                            </label>
+                            <textarea asp-for="Description" class="form-control" rows="4"
+                                      placeholder="Describe what this resource contains and how it can help with learning"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="Subject" class="form-label">
+                                <i class="fas fa-graduation-cap me-2"></i>Subject
+                            </label>
+                            <input asp-for="Subject" class="form-control" placeholder="e.g., Mathematics, Computer Science, Physics" />
+                            <span asp-validation-for="Subject" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="file" class="form-label">
+                                <i class="fas fa-cloud-upload-alt me-2"></i>Upload File
+                            </label>
+                            <input type="file" name="file" id="file" class="form-control"
+                                   accept=".pdf,.mp4,.avi,.mov,.wmv" />
+                            <small class="form-text text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Supported formats: PDF for documents, MP4/AVI/MOV/WMV for videos
+                            </small>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Resource
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Resources
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // File upload preview
+        document.getElementById('file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const fileSize = (file.size / 1024 / 1024).toFixed(2); // Convert to MB
+                console.log(`Selected file: ${file.name} (${fileSize} MB)`);
+            }
+        });
+    </script>
+}

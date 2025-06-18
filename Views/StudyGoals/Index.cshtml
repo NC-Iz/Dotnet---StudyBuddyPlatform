@@ -1,0 +1,211 @@
+﻿@model IEnumerable<StudyBuddyPlatform.Models.StudyGoal>
+
+@{
+    ViewData["Title"] = "Study Goals";
+}
+
+<div class="page-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1><i class="fas fa-target me-3"></i>Study Goals</h1>
+                <p>Set and track your learning objectives and achievements</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addGoalModal">
+                    <i class="fas fa-plus me-2"></i>Add New Goal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show slide-up" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-card slide-up">
+                    <div class="stat-number">@Model.Count()</div>
+                    <div class="stat-label">Total Goals</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card slide-up">
+                    <div class="stat-number">@Model.Count(g => g.IsAchieved)</div>
+                    <div class="stat-label">Achieved</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card slide-up">
+                    <div class="stat-number">@Model.Count(g => !g.IsAchieved && g.TargetDate >= DateTime.Today)</div>
+                    <div class="stat-label">Active Goals</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card slide-up">
+                    <div class="stat-number">@Model.Count(g => !g.IsAchieved && g.TargetDate < DateTime.Today)</div>
+                    <div class="stat-label">Overdue</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Goals Grid -->
+        <div class="row">
+            @foreach (var goal in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 slide-up @(goal.IsAchieved ? "border-success" : goal.TargetDate < DateTime.Today ? "border-danger" : "")">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="card-title mb-0 @(goal.IsAchieved ? "text-decoration-line-through" : "")">@goal.Title</h5>
+                                @if (goal.IsAchieved)
+                                {
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-trophy me-1"></i>Achieved
+                                    </span>
+                                }
+                                else if (goal.TargetDate < DateTime.Today)
+                                {
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-exclamation-triangle me-1"></i>Overdue
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary">
+                                        <i class="fas fa-target me-1"></i>Active
+                                    </span>
+                                }
+                            </div>
+                            
+                            @if (!string.IsNullOrEmpty(goal.Description))
+                            {
+                                <p class="card-text text-muted mb-3">
+                                    @(goal.Description.Length > 100 ? goal.Description.Substring(0, 100) + "..." : goal.Description)
+                                </p>
+                            }
+                            
+                            <div class="mb-3">
+                                @if (!string.IsNullOrEmpty(goal.Category))
+                                {
+                                    <span class="badge bg-secondary me-2">@goal.Category</span>
+                                }
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>Target: @goal.TargetDate.ToString("MMM dd, yyyy")
+                                </small>
+                                @if (goal.IsAchieved && goal.AchievedDate.HasValue)
+                                {
+                                    <br>
+                                    <small class="text-success">
+                                        <i class="fas fa-check-circle me-1"></i>Achieved: @goal.AchievedDate.Value.ToString("MMM dd, yyyy")
+                                    </small>
+                                }
+                            </div>
+                            
+                            <div class="d-flex gap-2">
+                                <form asp-action="ToggleAchieved" asp-route-id="@goal.Id" method="post" class="flex-fill">
+                                    <button type="submit" class="btn btn-sm @(goal.IsAchieved ? "btn-warning" : "btn-success") w-100">
+                                        <i class="fas @(goal.IsAchieved ? "fa-undo" : "fa-check") me-1"></i>
+                                        @(goal.IsAchieved ? "Mark Incomplete" : "Mark Achieved")
+                                    </button>
+                                </form>
+                                <form asp-action="Delete" asp-route-id="@goal.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                            onclick="return confirm('Are you sure you want to delete this goal?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="card slide-up">
+            <div class="card-body">
+                <div class="empty-state">
+                    <i class="fas fa-target"></i>
+                    <h4>No study goals yet!</h4>
+                    <p>Set your first study goal to start tracking your learning objectives and celebrate your achievements.</p>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGoalModal">
+                        <i class="fas fa-plus me-2"></i>Add Your First Goal
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Add Goal Modal -->
+<div class="modal fade" id="addGoalModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-plus-circle me-2"></i>Add New Study Goal
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="Create" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">
+                            <i class="fas fa-heading me-2"></i>Goal Title
+                        </label>
+                        <input type="text" name="title" id="title" class="form-control" placeholder="e.g., Master Linear Algebra" required />
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">
+                            <i class="fas fa-align-left me-2"></i>Description
+                        </label>
+                        <textarea name="description" id="description" class="form-control" rows="3" 
+                                  placeholder="Describe what you want to achieve..."></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="targetDate" class="form-label">
+                                <i class="fas fa-calendar me-2"></i>Target Date
+                            </label>
+                            <input type="date" name="targetDate" id="targetDate" class="form-control" 
+                                   value="@DateTime.Today.AddDays(30).ToString("yyyy-MM-dd")" required />
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="category" class="form-label">
+                                <i class="fas fa-tag me-2"></i>Category
+                            </label>
+                            <select name="category" id="category" class="form-control">
+                                <option value="Academic">Academic</option>
+                                <option value="Skill">Skill Development</option>
+                                <option value="Personal">Personal Growth</option>
+                                <option value="Career">Career</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Create Goal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

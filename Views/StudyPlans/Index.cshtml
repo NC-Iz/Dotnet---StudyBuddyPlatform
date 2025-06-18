@@ -1,0 +1,161 @@
+﻿@model IEnumerable<StudyBuddyPlatform.Models.StudyPlan>
+
+@{
+    ViewData["Title"] = "My Study Plans";
+}
+
+<div class="page-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1><i class="fas fa-calendar-alt me-3"></i>My Study Plans</h1>
+                <p>Organize your learning journey with structured study plans</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a asp-action="Create" class="btn btn-light me-2">
+                    <i class="fas fa-plus me-2"></i>Create Plan
+                </a>
+                <a asp-action="Progress" class="btn btn-outline-light">
+                    <i class="fas fa-chart-line me-2"></i>View Progress
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show slide-up" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-card slide-up">
+                    <div class="stat-number">@Model.Count()</div>
+                    <div class="stat-label">Total Plans</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card slide-up">
+                    <div class="stat-number">@Model.Count(p => p.IsActive)</div>
+                    <div class="stat-label">Active Plans</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card slide-up">
+                    <div class="stat-number">@Model.SelectMany(p => p.Tasks ?? new List<StudyTask>()).Count(t => t.IsCompleted)</div>
+                    <div class="stat-label">Completed Tasks</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card slide-up">
+                    <div class="stat-number">@Model.SelectMany(p => p.Tasks ?? new List<StudyTask>()).Count(t => !t.IsCompleted)</div>
+                    <div class="stat-label">Pending Tasks</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Study Plans Grid -->
+        <div class="row">
+            @foreach (var plan in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 slide-up">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="card-title mb-0">@plan.Title</h5>
+                                <!-- In the foreach loop where you display the badges -->
+                                <div>
+                                    <span class="badge bg-primary">@plan.Subject</span>
+                                    @if (plan.IsActive && plan.EndDate >= DateTime.Today)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else if (!plan.IsActive && plan.EndDate >= DateTime.Today)
+                                    {
+                                        <span class="badge bg-warning">Paused</span>
+                                    }
+                                    else if (plan.EndDate < DateTime.Today)
+                                    {
+                                        <span class="badge bg-danger">Expired</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <p class="card-text text-muted mb-3">
+                                @(string.IsNullOrEmpty(plan.Description) ? "No description available" : 
+                                  (plan.Description.Length > 100 ? plan.Description.Substring(0, 100) + "..." : plan.Description))
+                            </p>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar-start me-1"></i>@plan.StartDate.ToString("MMM dd, yyyy")
+                                </small>
+                                <br>
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar-end me-1"></i>@plan.EndDate.ToString("MMM dd, yyyy")
+                                </small>
+                                <br>
+                                <small class="text-muted">
+                                    <i class="fas fa-tasks me-1"></i>@(plan.Tasks?.Count ?? 0) tasks
+                                    (@(plan.Tasks?.Count(t => t.IsCompleted) ?? 0) completed)
+                                </small>
+                            </div>
+                            
+                            <!-- Progress bar for tasks -->
+                            @if (plan.Tasks?.Any() == true)
+                            {
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <small class="text-muted">Task Progress</small>
+                                        <small class="text-muted">@((plan.Tasks.Count(t => t.IsCompleted) * 100 / plan.Tasks.Count).ToString("F0"))%</small>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar" role="progressbar" 
+                                             style="width: @((plan.Tasks.Count(t => t.IsCompleted) * 100.0 / plan.Tasks.Count).ToString("F1"))%">
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            
+                            <div class="d-flex gap-2">
+                                <a asp-action="Details" asp-route-id="@plan.Id" class="btn btn-sm btn-primary flex-fill">
+                                    <i class="fas fa-eye me-1"></i>View Details
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@plan.Id" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit me-1"></i>Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="card slide-up">
+            <div class="card-body">
+                <div class="empty-state">
+                    <i class="fas fa-calendar-plus"></i>
+                    <h4>No study plans yet!</h4>
+                    <p>Create your first study plan to start organizing your learning journey. Set goals, track progress, and achieve your academic objectives.</p>
+                    <a asp-action="Create" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Create Your First Study Plan
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
