@@ -1,0 +1,485 @@
+﻿/* Custom Styles for Study Buddy Platform */
+
+/* Color Variables */
+:root {
+    --primary-color: #4f46e5;
+    --primary-dark: #3730a3;
+    --secondary-color: #f8fafc;
+    --accent-color: #06b6d4;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --border-color: #e5e7eb;
+}
+
+/* FINAL FOOTER FIX */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f8fafc;
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-bottom: 0;
+}
+
+/* Target your actual HTML structure - NO SPACING */
+#main-wrapper {
+    flex: 1 0 auto;
+    padding-bottom: 2rem;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+main {
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: calc(100vh - 200px);
+}
+
+/* Remove any container margins/padding */
+.container, .container-fluid {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Target any first element in main */
+main > *:first-child {
+    margin-top: 0 !important;
+}
+
+/* Ensure no spacing on direct children */
+main > .container:first-child,
+main > .container-fluid:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* FOOTER - NO MORE OVERLAP */
+.footer {
+    flex-shrink: 0;
+    margin-top: auto !important;
+    background-color: #ffffff !important;
+    border-top: 1px solid var(--border-color) !important;
+    position: relative !important;
+    bottom: auto !important;
+    width: 100% !important;
+}
+
+/* Override any Bootstrap footer classes */
+footer.footer {
+    margin-top: auto !important;
+    position: relative !important;
+}
+
+/* Navbar Styles */
+.navbar {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 0 !important;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white !important;
+}
+
+.navbar-nav .nav-link {
+    color: rgba(255,255,255,0.9) !important;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: white !important;
+    }
+
+/* Card Improvements */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: white;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1.5rem;
+    border: none;
+}
+
+    .card-header h3, .card-header h4, .card-header h5 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+/* Button Improvements */
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3);
+}
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+    }
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, var(--warning-color) 0%, #d97706 100%);
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%);
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+.btn-info {
+    background: linear-gradient(135deg, var(--accent-color) 0%, #0891b2 100%);
+    box-shadow: 0 2px 4px rgba(6, 182, 212, 0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    box-shadow: 0 2px 4px rgba(107, 114, 128, 0.3);
+}
+
+/* Form Improvements */
+.form-control {
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+.form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+/* Table Improvements */
+.table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+    .table thead th {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border: none;
+        font-weight: 600;
+        color: var(--text-dark);
+        padding: 1rem;
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        border-color: var(--border-color);
+        vertical-align: middle;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+/* Alert Improvements */
+.alert {
+    border-radius: 8px;
+    border: none;
+    padding: 1rem 1.5rem;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    color: #065f46;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+    color: #991b1b;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    color: #1e40af;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
+    color: #92400e;
+}
+
+/* Page Header - NO TOP SPACING */
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-radius: 0 0 24px 24px;
+    margin-top: 0 !important;
+}
+
+    .page-header h1 {
+        margin: 0;
+        font-weight: 700;
+    }
+
+    .page-header p {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+    }
+
+    /* Remove spacing from page headers that might be first elements */
+    .page-header:first-child,
+    main > .page-header:first-child {
+        margin-top: 0 !important;
+    }
+
+/* Stats Cards */
+.stats-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+    .stats-card .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .stats-card .stat-label {
+        color: var(--text-light);
+        font-weight: 500;
+    }
+
+/* Fixed Dropdown Positioning */
+.dropdown-menu {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    margin-top: 0.5rem;
+    min-width: 200px;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1rem;
+    transition: background-color 0.2s ease;
+}
+
+    .dropdown-item:hover {
+        background-color: var(--secondary-color);
+    }
+
+/* Navbar dropdown positioning */
+.navbar-nav .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    margin-top: 0;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    z-index: 1050;
+}
+
+/* Left-aligned dropdowns (Study Plans, etc.) - DEFAULT */
+.navbar-nav .dropdown-menu {
+    left: 0;
+    right: auto;
+}
+
+/* Right-aligned dropdowns (User Account - last nav item) */
+.navbar-nav .nav-item:last-child .dropdown-menu,
+.dropdown-menu-end {
+    right: 0;
+    left: auto;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-light);
+}
+
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .empty-state h4 {
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+    }
+
+/* Resource Type Badges */
+.resource-type-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.resource-type-pdf {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+}
+
+.resource-type-video {
+    background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
+    color: #5b21b6;
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Improvements */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    .container, .container-fluid {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .table-responsive {
+        border-radius: 8px;
+    }
+
+    /* Mobile footer adjustments */
+    #main-wrapper {
+        padding-bottom: 1rem;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    main {
+        min-height: calc(100vh - 180px);
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+/* Mobile responsive dropdown fixes */
+@media (max-width: 991.98px) {
+    .navbar-nav .dropdown-menu {
+        position: static;
+        float: none;
+        width: auto;
+        margin-top: 0;
+        background-color: transparent;
+        border: 0;
+        box-shadow: none;
+        left: auto;
+        right: auto;
+    }
+
+        .navbar-nav .dropdown-menu .dropdown-item {
+            color: rgba(255,255,255,0.9);
+            padding: 0.5rem 1rem;
+        }
+
+            .navbar-nav .dropdown-menu .dropdown-item:hover {
+                background-color: rgba(255,255,255,0.1);
+                color: white;
+            }
+}
+
+/* EMERGENCY BACKUP FOOTER FIX - If above doesn't work, uncomment this */
+/*
+body {
+    padding-bottom: 150px !important;
+}
+
+.footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background-color: white !important;
+    border-top: 1px solid #e5e7eb !important;
+}
+*/
